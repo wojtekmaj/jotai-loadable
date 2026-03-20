@@ -1,0 +1,61 @@
+{
+  "name": "jotai-loadable",
+  "version": "0.1.0",
+  "description": "A tiny helper that turns async Jotai atoms into loadable atoms",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./*": "./*"
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "clean": "node -e \"fs.rmSync('./dist', { recursive: true, force: true })\"",
+    "format": "biome format",
+    "lint": "biome lint",
+    "postinstall": "husky",
+    "prepack": "yarn clean && yarn build",
+    "test": "yarn lint && yarn tsc && yarn format && yarn unit",
+    "tsc": "tsc",
+    "unit": "vitest"
+  },
+  "keywords": [
+    "jotai",
+    "atoms",
+    "async",
+    "loadable"
+  ],
+  "author": {
+    "name": "Wojciech Maj",
+    "email": "kontakt@wojtekmaj.pl"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@biomejs/biome": "2.2.2",
+    "husky": "^9.0.0",
+    "jotai": "^2.18.1",
+    "typescript": "^5.9.2",
+    "vitest": "^4.0.1"
+  },
+  "peerDependencies": {
+    "jotai": "^2.3.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "files": [
+    "dist/**/*",
+    "src/**/*",
+    "!**/*.spec.ts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wojtekmaj/jotai-loadable.git"
+  },
+  "funding": "https://github.com/wojtekmaj/jotai-loadable?sponsor=1",
+  "packageManager": "yarn@4.10.3"
+}

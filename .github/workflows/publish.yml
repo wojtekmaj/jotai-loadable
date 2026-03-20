@@ -1,0 +1,50 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+env:
+  HUSKY: 0
+
+permissions:
+  id-token: write
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Cache Yarn cache
+        uses: actions/cache@v5
+        env:
+          cache-name: yarn-cache
+        with:
+          path: ~/.yarn/berry/cache
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.cache-name }}
+
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Corepack
+        run: npm install -g corepack
+
+      - name: Install dependencies
+        run: yarn --immutable
+
+      - name: Publish with latest tag
+        if: github.event.release.prerelease == false
+        run: yarn npm publish --tag latest
+
+      - name: Publish with next tag
+        if: github.event.release.prerelease == true
+        run: yarn npm publish --tag next
