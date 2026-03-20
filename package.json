@@ -1,6 +1,6 @@
 {
   "name": "jotai-loadable",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A tiny helper that turns async Jotai atoms into loadable atoms",
   "type": "module",
   "sideEffects": false,
