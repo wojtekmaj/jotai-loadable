@@ -3,6 +3,12 @@ import { unwrap } from 'jotai/vanilla/utils';
 
 import type { Atom } from 'jotai/vanilla';
 
+declare global {
+  interface ImportMeta {
+    readonly env?: Record<string, string>;
+  }
+}
+
 const cache = new WeakMap();
 
 const memo = <T>(create: () => T, dep1: object): T =>
@@ -18,6 +24,9 @@ export function loadable<Value>(anAtom: Atom<Value>): Atom<Loadable<Value>> {
     const LOADING: Loadable<Value> = { state: 'loading' };
 
     const unwrappedAtom = unwrap(anAtom, () => LOADING);
+    if (import.meta.env?.MODE !== 'production') {
+      unwrappedAtom.debugPrivate = true;
+    }
 
     return atom((get) => {
       try {
